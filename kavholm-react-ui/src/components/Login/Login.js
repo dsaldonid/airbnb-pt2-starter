@@ -1,52 +1,55 @@
-import { useEffect, useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
+// import { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
 import { Button, Card, Input, InputField } from "components"
-import apiClient from "services/apiClient"
+// import apiClient from "services/apiClient"
+import useLoginForm from "../../hooks/useLoginForm"
 import HERO_BG from "assets/HERO_BG.png"
 import "./Login.css"
 
 export default function Login({ user, setUser }) {
-  const navigate = useNavigate()
-  const [isProcessing, setIsProcessing] = useState(false)
-  const [errors, setErrors] = useState({})
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-  })
 
-  useEffect(() => {
-    // if user is already logged in,
-    // redirect them to the home page
-    if (user?.username) {
-      navigate("/dashboard")
-    }
-  }, [user, navigate])
+  const { form, errors, handleOnChange, handleOnSubmit, isProcessing } = useLoginForm({ user, setUser})
+  // const navigate = useNavigate()
+  // const [isProcessing, setIsProcessing] = useState(false)
+  // const [errors, setErrors] = useState({})
+  // const [form, setForm] = useState({
+  //   email: "",
+  //   password: "",
+  // })
 
-  const handleOnChange = (event) => {
-    if (event.target.name === "email") {
-      if (event.target.value.indexOf("@") === -1) {
-        setErrors((e) => ({ ...e, email: "Please enter a valid email." }))
-      } else {
-        setErrors((e) => ({ ...e, email: null }))
-      }
-    }
+  // useEffect(() => {
+  //   // if user is already logged in,
+  //   // redirect them to the home page
+  //   if (user?.username) {
+  //     navigate("/dashboard")
+  //   }
+  // }, [user, navigate])
 
-    setForm((f) => ({ ...f, [event.target.name]: event.target.value }))
-  }
+  // const handleOnChange = (event) => {
+  //   if (event.target.name === "email") {
+  //     if (event.target.value.indexOf("@") === -1) {
+  //       setErrors((e) => ({ ...e, email: "Please enter a valid email." }))
+  //     } else {
+  //       setErrors((e) => ({ ...e, email: null }))
+  //     }
+  //   }
 
-  const handleOnSubmit = async () => {
-    setIsProcessing(true)
+  //   setForm((f) => ({ ...f, [event.target.name]: event.target.value }))
+  // }
 
-    const { data, error } = await apiClient.loginUser({ email: form.email, password: form.password })
-    if (error) setErrors((e) => ({ ...e, form: error }))
-    if (data) {
-      setUser(data.user)
-      apiClient.setToken(data.token)
-      localStorage.setItem("kavholm_token", data.token)
-    }
+  // const handleOnSubmit = async () => {
+  //   setIsProcessing(true)
 
-    setIsProcessing(false)
-  }
+  //   const { data, error } = await apiClient.loginUser({ email: form.email, password: form.password })
+  //   if (error) setErrors((e) => ({ ...e, form: error }))
+  //   if (data) {
+  //     setUser(data.user)
+  //     apiClient.setToken(data.token)
+  //     localStorage.setItem("kavholm_token", data.token)
+  //   }
+
+  //   setIsProcessing(false)
+  // }
 
   return (
     <div className="Login">
